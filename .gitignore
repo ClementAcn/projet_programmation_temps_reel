@@ -1,0 +1,14 @@
+.vscode/
+vscode/
+.vscode
+
+images/
+images
+
+*.jpg
+
+env/
+venv/
+
+*.yml
+*.xml
