@@ -5,6 +5,9 @@ faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 video_capture = cv2.VideoCapture(0)
 rec = cv2.face.LBPHFaceRecognizer_create()
 rec.read('data_train/trainingdata.yml')
+video_capture.set(cv2.CAP_PROP_FPS , 20)
+video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
  
 id=0
 
@@ -37,10 +40,10 @@ while True:
         print(id)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (11, 57, 215), 2)
         id, conf = rec.predict(gray[y:y+h,x:x+w])
-        if id <= 61 or (id >=218 and id <= 255):
+        if id >= 1 and id <= 76:
             name="Clement"
-        elif id >= 62 and id <= 217:
-            name="Samixe"
+        elif id >= 77 and id <= 167:
+            name="Cédric"
         else:
             name='Inconnu'
         font = cv2.FONT_HERSHEY_SIMPLEX
