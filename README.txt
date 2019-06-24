@@ -10,7 +10,7 @@ source env/Script/activate
 pip install -r requirements.txt
 
 - Lancement de l'application 
-python main.py
+python main_final.py
 
 - Lors de la premiere utilisation il faudra enregistrer des photos utile à l'apprentissage de la Reconnaissance Facial
 prise de photo : touche 's'
@@ -20,4 +20,4 @@ prise de photo : touche 's'
 - Pour l'apprentissage il faut lancer l'application 'data_set_create.py' 
 python data_set_create.py
 
-- Relancer l'application main.py
+- Relancer l'application main_final.py

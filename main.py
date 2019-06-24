@@ -26,9 +26,9 @@ name="not found"
 while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(
-        gray,
+        frame,
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30),
@@ -39,7 +39,7 @@ while True:
     for (x, y, w, h) in faces:
         print(id)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (11, 57, 215), 2)
-        id, conf = rec.predict(gray[y:y+h,x:x+w])
+        id, conf = rec.predict(frame[y:y+h,x:x+w])
         if id >= 1 and id <= 76:
             name="Clement"
         elif id >= 77 and id <= 167:
@@ -61,7 +61,8 @@ while True:
         i+=1
         imageName = 'image_save.{}'.format(i)
         cv2.imwrite('images/' + imageName + ".png", frame)
-       
+    fps = '{} FPS '.format(video_capture.get(cv2.CAP_PROP_FPS))
+    print(fps)
  
 # When everything is done, release the capture
 video_capture.release()
