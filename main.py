@@ -1,28 +1,17 @@
 import cv2
-import os
 
-faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 video_capture = cv2.VideoCapture(0)
 rec = cv2.face.LBPHFaceRecognizer_create()
 rec.read('data_train/trainingdata.yml')
+# Attention au FPS
 video_capture.set(cv2.CAP_PROP_FPS , 20)
 video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
- 
+
 id=0
-
-def getNbImages(path):
-    imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
-    max = 0
-    for imagePath in imagePaths:      
-        ID = int(os.path.split(imagePath)[-1].split(".")[1])
-        if ID > max:
-            max = ID
-    return max
-
-i = getNbImages('images/')
-
-name="not found"
+i=0
+name="None"
 while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
@@ -34,24 +23,28 @@ while True:
         minSize=(30, 30),
         flags=cv2.CASCADE_SCALE_IMAGE
     )
- 
+
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
-        print(id)
+        # print(id)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (11, 57, 215), 2)
         id, conf = rec.predict(frame[y:y+h,x:x+w])
-        if id >= 1 and id <= 76:
-            name="Clement"
-        elif id >= 77 and id <= 167:
-            name="Cédric"
-        else:
-            name='Inconnu'
+        if (id >= 0 and id <= 23):
+            name = 'Clement'
+        if (id >= 23 and id <= 81):
+            name = 'Samix'
+        # print(id)
+        print(name)
+        fps = '{} FPS'.format(video_capture.get(cv2.CAP_PROP_FPS))
+        print(fps)
+        # print('-----')
+
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(frame, name, (x, y), font, 1, (11, 57, 215), 2, cv2.LINE_AA)
- 
+
     # Display the resulting frame
-    cv2.imshow('Video', frame)
- 
+    # cv2.imshow('Video', frame)
+
     k = cv2.waitKey(1)
     if k == 27 or k == ord('q'):
         imageName = 'No image saved'
@@ -59,17 +52,11 @@ while True:
     elif k == ord('s'): # wait for 's' key to save and exit
         print(i)
         i+=1
-        imageName = 'image_save.{}'.format(i)
-        cv2.imwrite('images/' + imageName + ".png", frame)
-    fps = '{} FPS '.format(video_capture.get(cv2.CAP_PROP_FPS))
-    print(fps)
- 
+        imageName = 'image.{}'.format(i)
+        cv2.imwrite('image/' + imageName + ".png", frame)
+        
+
 # When everything is done, release the capture
 video_capture.release()
 cv2.destroyAllWindows()
 print(imageName)
- 
-"""
-01 à 40 ==> Samix
-41 à 80 ==> Clément
-"""
